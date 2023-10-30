@@ -27,6 +27,7 @@ h2 {
 }
 
 ul {
+    list-style: none;
     display: grid;
     place-items: center;
 }
@@ -40,11 +41,11 @@ ul li {
     background-color: white;
 }
 
-redturn {
+.redturn {
     background-color: red;
 }
 
-yellowturn {
+.yellowturn {
     background-color: yellow;
 }
 
