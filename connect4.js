@@ -4,10 +4,11 @@ let COLOR = true;
 // check if there is a win
 function win (turn) {
     if (turn === "redturn") {
-        return redHorizontalWins() || redVerticalWins() || redDiagonalWins();
+        console.log("redDiagonalWins", redDiagonalWins());
+        return redHorizontalWins() || redVerticalWins() || redDiagonalWins() || redReverseDiagonalWins();
     }
     else if (turn === "yellowturn") {
-        return yellowHorizontalWins() || yellowVerticalWins();
+        return yellowHorizontalWins() || yellowVerticalWins() || yellowDiagonalWins() || yellowReverseDiagonalWins();
     }
 }
 
@@ -204,90 +205,291 @@ function yellowVerticalWins() {
     return rowWin && columnWin;
 }
 
-// diagonal wins
-//   divide into 4 quadrants
-// var topLeft = 0;
-// var topRight = topLeft + 3;
-//   use double loop
-// for(var i = 0; i < 3; i++){
-//     for(var j = 0; j < 4; j++){
-//         if($("#" + topLeft).attr("data-player") == p
-//         && $("#" + topLeft + 8).attr("data-player") == p
-//         && $("#" +topLeft + 16).attr("data-player") == p
-//         && $("#" +topLeft + 24).attr("data-player") == p){
-//             return true;
-//         }
-
-//         if($("#" + topRight).attr("data-player") == p
-//         && $("#" + topRight + 6).attr("data-player") == p
-//         && $("#" +topRight + 12).attr("data-player") == p
-//         && $("#" +topRight + 18).attr("data-player") == p){
-//             return true;
-//         }
-
-//         topLeft++;
-//         topRight = topLeft + 3;
-//     }
-//     top = i * 7 + 7;
-//     topRight = topLeft + 3;
-// }
-
-// return false;
-
 
 function redDiagonalWins() {
-    const reds = document.querySelectorAll(".redturn")
+    const reds = [...document.querySelectorAll(".redturn")]
     const selectedReds = [];
-    let c = 0;
-    reds.forEach(function(red){
-        if (parseInt(red.classList[0][1]) !== c){
-            selectedReds.push(red)
-            c = parseInt(red.classList[0][1])
+    let c = 1;
+    let r = 1;
+    let startingElement = [];
+    let startingRowElement = [];
+    
+// columns;
+    for (let i=0; i<7; i++) {
+        const firstReds = reds.filter(function(red){
+            console.log("red:",red);
+            return red.classList[0][1] == c;
+        })
+        console.log("firstReds:",firstReds);
+        if (!firstReds) {
+            c++;
+            continue;
+        } else {
+            startingElement = firstReds;
+        }
+    }
+    console.log("startingElement:",startingElement);
+    let occurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = reds.find(function(red){
+                return Math.abs(parseInt(red.classList[0][1]) - parseInt(element.classList[0][1])) === i;
+            }) 
+            if (next) {
+                occurances++;
+                continue;
+            } else {
+                break;
+            }
         }
     })
-    console.log(selectedReds);
-    let rowWin = false;
-    let rowMatches = 1;
-    for (let i=0; i<selectedReds.length; i++) {
-        const red = selectedReds[i];
-        const circlePosition = red.classList[0];
-        // convert row into integer using parse int 
-        const row = parseInt(circlePosition[circlePosition.length - 1]);
-        if (i > 0) {
-            let prevRow = reds[i - 1].classList[0];
-            console.log(row, prevRow);
-        //convert prevRow into integer
-        //make sure difference is 1 using Math.abs
-            if (row - parseInt(prevRow[prevRow.length - 1])=== 1) {
-                rowMatches++;
-                console.log("checking", rowMatches);
-            }
-        }
-        if (rowMatches === 4) {
-            rowWin = true;
-            console.log(rowMatches, rowWin);
-            break;
+
+// rows;
+    for (let i=0; i<6; i++) {
+        const firstReds = reds.filter(function(red){
+            console.log("red:",red);
+            return red.classList[0][3] == r;
+        })
+        console.log("firstReds:",firstReds);
+        if (!firstReds) {
+            r++;
+            continue;
+        } else {
+            startingRowElement = firstReds;
         }
     }
-    let columnWin = false;
-    let columnMatches = 1;
-    for (let i=0; i<reds.length; i++) {
-        const red = reds[i];
-        const circlePosition = red.classList[0];
-        const column = parseInt(circlePosition[1]);
-        if (i > 0) {
-            let prevCol = reds[i - 1].classList[0];
-            if (column - parseInt(prevCol[1])=== 1) {
-                // makes sure result wont be + or - values but just 1
-                columnMatches++;
+    console.log("startingRowElement:",startingRowElement);
+    let rowOccurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = reds.find(function(red){
+                return Math.abs(parseInt(red.classList[0][3]) - parseInt(element.classList[0][3])) === i;
+            })
+            if (next) {
+                rowOccurances++;
+                continue;
+            } else {
+                break;
             }
         }
-        if (columnMatches === 4) {
-            columnWin = true;
-            break;
+    })
+    console.log("rowOccurances:",rowOccurances);
+    console.log("occurances:", occurances, rowOccurances >= 4 && occurances >=4);
+    return occurances >=4 && rowOccurances >=4 ;
+}
+
+function redReverseDiagonalWins() {
+    const reds = [...document.querySelectorAll(".redturn")]
+    const selectedReds = [];
+    let c = 7;
+    let r = 6;
+    let startingElement = [];
+    let startingRowElement = [];
+// columns;
+    for (let i=6; i>=0; i--) {
+        const firstReds = reds.filter(function(red){
+            console.log("red:",red);
+            return red.classList[0][1] == c;
+        })
+        console.log("firstReds:",firstReds);
+        if (!firstReds) {
+            c--;
+            continue;
+        } else {
+            startingElement = firstReds;
         }
     }
-    return rowWin && columnWin;
+    console.log("startingElement:",startingElement);
+    let occurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = reds.find(function(red){
+                return Math.abs(parseInt(red.classList[0][1]) - parseInt(element.classList[0][1])) === i;
+            }) 
+            if (next) {
+                occurances++;
+                continue;
+            } else {
+                break;
+            }
+        }
+    })
+
+// rows;
+    for (let i=0; i<6; i++) {
+        const firstReds = reds.filter(function(red){
+            console.log("red:",red);
+            return red.classList[0][3] == r;
+        })
+        console.log("firstReds:",firstReds);
+        if (!firstReds) {
+            r++;
+            continue;
+        } else {
+            startingRowElement = firstReds;
+        }
+    }
+    console.log("startingRowElement:",startingRowElement);
+    let rowOccurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = reds.find(function(red){
+                return Math.abs(parseInt(red.classList[0][3]) - parseInt(element.classList[0][3])) === i;
+            })
+            if (next) {
+                rowOccurances++;
+                continue;
+            } else {
+                break;
+            }
+        }
+    })
+    console.log("rowOccurances:",rowOccurances);
+    console.log("occurances:", occurances, rowOccurances >= 4 && occurances >=4);
+    return occurances >=4 && rowOccurances >=4 ;
+}
+
+
+function yellowDiagonalWins() {
+    const yellows = [...document.querySelectorAll(".yellowturn")]
+    const selectedYellows = [];
+    let c = 1;
+    let r = 1;
+    let startingElement = [];
+    let startingRowElement = [];
+// columns;
+    for (let i=0; i<7; i++) {
+        const firstYellows = yellows.filter(function(yellow){
+            console.log("yellow:",yellow);
+            return yellow.classList[0][1] == c;
+        })
+        console.log("firstYellows:",firstYellows);
+        if (!firstYellows) {
+            c++;
+            continue;
+        } else {
+            startingElement = firstYellows;
+        }
+    }
+    console.log("startingElement:",startingElement);
+    let occurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = yellows.find(function(yellow){
+                return Math.abs(parseInt(yellow.classList[0][1]) - parseInt(element.classList[0][1])) === i;
+            }) 
+            if (next) {
+                occurances++;
+                continue;
+            } else {
+                break;
+            }
+        }
+    })
+
+// rows;
+    for (let i=0; i<6; i++) {
+        const firstYellows = yellows.filter(function(yellow){
+            console.log("yellow:",yellow);
+            return yellow.classList[0][3] == r;
+        })
+        console.log("firstYellows:",firstYellows);
+        if (!firstYellows) {
+            r++;
+            continue;
+        } else {
+            startingRowElement = firstYellows;
+        }
+    }
+    console.log("startingRowElement:",startingRowElement);
+    let rowOccurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = yellows.find(function(yellow){
+                return Math.abs(parseInt(yellow.classList[0][3]) - parseInt(element.classList[0][3])) === i;
+            })
+            if (next) {
+                rowOccurances++;
+                continue;
+            } else {
+                break;
+            }
+        }
+    })
+    console.log("rowOccurances:",rowOccurances);
+    console.log("occurances:", occurances, rowOccurances >= 4 && occurances >=4);
+    return occurances >=4 && rowOccurances >=4 ;
+}
+
+function yellowReverseDiagonalWins() {
+    const yellows = [...document.querySelectorAll(".yellowturn")]
+    const selectedYellows = [];
+    let c = 7;
+    let r = 6;
+    let startingElement = [];
+    let startingRowElement = [];
+// columns;
+    for (let i=6; i>=0; i--) {
+        const firstYellows = yellows.filter(function(yellow){
+            console.log("yellow:",yellow);
+            return yellow.classList[0][1] == c;
+        })
+        console.log("firstYellows:",firstYellows);
+        if (!firstYellows) {
+            c--;
+            continue;
+        } else {
+            startingElement = firstYellows;
+        }
+    }
+    console.log("startingElement:",startingElement);
+    let occurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = yellows.find(function(yellow){
+                return Math.abs(parseInt(yellow.classList[0][1]) - parseInt(element.classList[0][1])) === i;
+            }) 
+            if (next) {
+                occurances++;
+                continue;
+            } else {
+                break;
+            }
+        }
+    })
+
+// rows;
+    for (let i=0; i<6; i++) {
+        const firstYellows = yellows.filter(function(yellow){
+            console.log("yellow:",yellow);
+            return yellow.classList[0][3] == r;
+        })
+        console.log("firstYellows:",firstYellows);
+        if (!firstYellows) {
+            r++;
+            continue;
+        } else {
+            startingRowElement = firstYellows;
+        }
+    }
+    console.log("startingRowElement:",startingRowElement);
+    let rowOccurances = 1;
+    startingElement.forEach(function(element){
+        for (let i=1; i<4; i++) {
+            const next = yellows.find(function(yellow){
+                return Math.abs(parseInt(yellow.classList[0][3]) - parseInt(element.classList[0][3])) === i;
+            })
+            if (next) {
+                rowOccurances++;
+                continue;
+            } else {
+                break;
+            }
+        }
+    })
+    console.log("rowOccurances:",rowOccurances);
+    console.log("occurances:", occurances, rowOccurances >= 4 && occurances >=4);
+    return occurances >=4 && rowOccurances >=4 ;
 }
 
 document.querySelectorAll(".column").forEach((e) => {
