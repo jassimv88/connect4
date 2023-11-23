@@ -1,10 +1,9 @@
 
 let COLOR = true;
 
-// check if there is a win
+// function that checks if there is a win
 function win (turn) {
     if (turn === "redturn") {
-        console.log("redDiagonalWins", redDiagonalWins());
         return redHorizontalWins() || redVerticalWins() || redDiagonalWins() || redReverseDiagonalWins();
     }
     else if (turn === "yellowturn") {
@@ -12,8 +11,7 @@ function win (turn) {
     }
 }
 
-//RED
-// horizontal win
+// red horizontal wins
 function redHorizontalWins() {
     const reds = document.querySelectorAll(".redturn")
     // console.log(reds)
@@ -61,7 +59,7 @@ function redHorizontalWins() {
     return rowWin && columnWin;
 }
 
-//vertical wins
+// red vertical wins
 function redVerticalWins() {
     const reds = document.querySelectorAll(".redturn")
     // console.log(reds)
@@ -109,8 +107,7 @@ function redVerticalWins() {
     return rowWin && columnWin;
 }
 
-//YELLOW
-// horizontal win
+// yellow horizontal wins
 function yellowHorizontalWins() {
     const yellows = document.querySelectorAll(".yellowturn")
     let rowWin = false;
@@ -157,7 +154,7 @@ function yellowHorizontalWins() {
     return rowWin && columnWin;
 }
 
-// vertical wins
+// yellow vertical winss
 function yellowVerticalWins() {
     const yellows = document.querySelectorAll(".yellowturn")
     // console.log(reds)
@@ -205,7 +202,7 @@ function yellowVerticalWins() {
     return rowWin && columnWin;
 }
 
-
+// red diagonal wins
 function redDiagonalWins() {
     const reds = [...document.querySelectorAll(".redturn")]
     const selectedReds = [];
@@ -278,6 +275,7 @@ function redDiagonalWins() {
     return occurances >=4 && rowOccurances >=4 ;
 }
 
+// red reverse diagonal wins
 function redReverseDiagonalWins() {
     const reds = [...document.querySelectorAll(".redturn")]
     const selectedReds = [];
@@ -349,7 +347,7 @@ function redReverseDiagonalWins() {
     return occurances >=4 && rowOccurances >=4 ;
 }
 
-
+// yellow diagonal wins
 function yellowDiagonalWins() {
     const yellows = [...document.querySelectorAll(".yellowturn")]
     const selectedYellows = [];
@@ -421,6 +419,7 @@ function yellowDiagonalWins() {
     return occurances >=4 && rowOccurances >=4 ;
 }
 
+// yellow reverse diagonal wins
 function yellowReverseDiagonalWins() {
     const yellows = [...document.querySelectorAll(".yellowturn")]
     const selectedYellows = [];
@@ -492,9 +491,9 @@ function yellowReverseDiagonalWins() {
     return occurances >=4 && rowOccurances >=4 ;
 }
 
+// event listener for player turns, indicates who's turn
 document.querySelectorAll(".column").forEach((e) => {
     e.addEventListener("click", (ul) => {
-        // console.log('columnclicked', ul.target)
         const allItems = e.querySelectorAll('li')
             const currentItem = selectCurrentItem(allItems)
             if (COLOR){
@@ -518,6 +517,7 @@ document.querySelectorAll(".column").forEach((e) => {
     })
 })
 
+// function to keep playing
 function selectCurrentItem(allItems) {
     for (let i = allItems.length -1; i >= 0; i--) {
         if (allItems[i].classList.contains('redturn')||allItems[i].classList.contains('yellowturn')){
