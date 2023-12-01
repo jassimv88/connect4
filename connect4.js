@@ -24,7 +24,7 @@ function redHorizontalWins() {
         const row = circlePosition[circlePosition.length - 1];
         if (i > 0) {
             let prevRow = reds[i - 1].classList[0];
-            console.log(row, prevRow);
+            console.log('checking horizontal', row, prevRow);
         //convert prevRow into integer
         //make sure difference is 1 using Math.abs
             if (row === prevRow[prevRow.length - 1]) {
@@ -33,6 +33,7 @@ function redHorizontalWins() {
             }
         }
         if (rowMatches === 4) {
+            console.log('checking win');
             rowWin = true;
             console.log(rowMatches, rowWin);
             break;
@@ -81,6 +82,7 @@ function redVerticalWins() {
             }
         }
         if (rowMatches === 4) {
+            console.log('checking win');
             rowWin = true;
             console.log(rowMatches, rowWin);
             break;
@@ -214,11 +216,11 @@ function redDiagonalWins() {
 // columns;
     for (let i=0; i<7; i++) {
         const firstReds = reds.filter(function(red){
-            console.log("red:",red);
+            console.log("red:",red, red.classList[0][1], c);
             return red.classList[0][1] == c;
         })
         console.log("firstReds:",firstReds);
-        if (!firstReds) {
+        if (firstReds.length === 0) {
             c++;
             continue;
         } else {
@@ -227,15 +229,18 @@ function redDiagonalWins() {
     }
     console.log("startingElement:",startingElement);
     let occurances = 1;
+    console.log('startingElement', startingElement);
     startingElement.forEach(function(element){
         for (let i=1; i<4; i++) {
             const next = reds.find(function(red){
                 return Math.abs(parseInt(red.classList[0][1]) - parseInt(element.classList[0][1])) === i;
             }) 
+            console.log('match', next, element, occurances);
             if (next) {
                 occurances++;
                 continue;
             } else {
+                occurances = 1;
                 break;
             }
         }
@@ -248,7 +253,7 @@ function redDiagonalWins() {
             return red.classList[0][3] == r;
         })
         console.log("firstReds:",firstReds);
-        if (!firstReds) {
+        if (firstReds.length === 0) {
             r++;
             continue;
         } else {
@@ -257,7 +262,7 @@ function redDiagonalWins() {
     }
     console.log("startingRowElement:",startingRowElement);
     let rowOccurances = 1;
-    startingElement.forEach(function(element){
+    startingRowElement.forEach(function(element){
         for (let i=1; i<4; i++) {
             const next = reds.find(function(red){
                 return Math.abs(parseInt(red.classList[0][3]) - parseInt(element.classList[0][3])) === i;
@@ -266,6 +271,7 @@ function redDiagonalWins() {
                 rowOccurances++;
                 continue;
             } else {
+                rowOccurances = 1;
                 break;
             }
         }
@@ -290,7 +296,7 @@ function redReverseDiagonalWins() {
             return red.classList[0][1] == c;
         })
         console.log("firstReds:",firstReds);
-        if (!firstReds) {
+        if (firstReds.length === 0) {
             c--;
             continue;
         } else {
@@ -308,6 +314,7 @@ function redReverseDiagonalWins() {
                 occurances++;
                 continue;
             } else {
+                occurances = 1;
                 break;
             }
         }
@@ -320,7 +327,7 @@ function redReverseDiagonalWins() {
             return red.classList[0][3] == r;
         })
         console.log("firstReds:",firstReds);
-        if (!firstReds) {
+        if (firstReds.length === 0) {
             r++;
             continue;
         } else {
@@ -329,7 +336,7 @@ function redReverseDiagonalWins() {
     }
     console.log("startingRowElement:",startingRowElement);
     let rowOccurances = 1;
-    startingElement.forEach(function(element){
+    startingRowElement.forEach(function(element){
         for (let i=1; i<4; i++) {
             const next = reds.find(function(red){
                 return Math.abs(parseInt(red.classList[0][3]) - parseInt(element.classList[0][3])) === i;
@@ -338,6 +345,7 @@ function redReverseDiagonalWins() {
                 rowOccurances++;
                 continue;
             } else {
+                rowOccurances = 1;
                 break;
             }
         }
@@ -362,7 +370,7 @@ function yellowDiagonalWins() {
             return yellow.classList[0][1] == c;
         })
         console.log("firstYellows:",firstYellows);
-        if (!firstYellows) {
+        if (firstYellows.length === 0) {
             c++;
             continue;
         } else {
@@ -380,6 +388,7 @@ function yellowDiagonalWins() {
                 occurances++;
                 continue;
             } else {
+                occurances = 1;
                 break;
             }
         }
@@ -392,7 +401,7 @@ function yellowDiagonalWins() {
             return yellow.classList[0][3] == r;
         })
         console.log("firstYellows:",firstYellows);
-        if (!firstYellows) {
+        if (firstYellows.length === 0) {
             r++;
             continue;
         } else {
@@ -401,7 +410,7 @@ function yellowDiagonalWins() {
     }
     console.log("startingRowElement:",startingRowElement);
     let rowOccurances = 1;
-    startingElement.forEach(function(element){
+    startingRowElement.forEach(function(element){
         for (let i=1; i<4; i++) {
             const next = yellows.find(function(yellow){
                 return Math.abs(parseInt(yellow.classList[0][3]) - parseInt(element.classList[0][3])) === i;
@@ -410,6 +419,7 @@ function yellowDiagonalWins() {
                 rowOccurances++;
                 continue;
             } else {
+                rowOccurances = 1;
                 break;
             }
         }
@@ -434,7 +444,7 @@ function yellowReverseDiagonalWins() {
             return yellow.classList[0][1] == c;
         })
         console.log("firstYellows:",firstYellows);
-        if (!firstYellows) {
+        if (firstYellows.length === 0) {
             c--;
             continue;
         } else {
@@ -452,6 +462,7 @@ function yellowReverseDiagonalWins() {
                 occurances++;
                 continue;
             } else {
+                occurances = 1;
                 break;
             }
         }
@@ -464,7 +475,7 @@ function yellowReverseDiagonalWins() {
             return yellow.classList[0][3] == r;
         })
         console.log("firstYellows:",firstYellows);
-        if (!firstYellows) {
+        if (firstYellows.length === 0) {
             r++;
             continue;
         } else {
@@ -473,7 +484,7 @@ function yellowReverseDiagonalWins() {
     }
     console.log("startingRowElement:",startingRowElement);
     let rowOccurances = 1;
-    startingElement.forEach(function(element){
+    startingRowElement.forEach(function(element){
         for (let i=1; i<4; i++) {
             const next = yellows.find(function(yellow){
                 return Math.abs(parseInt(yellow.classList[0][3]) - parseInt(element.classList[0][3])) === i;
@@ -482,6 +493,7 @@ function yellowReverseDiagonalWins() {
                 rowOccurances++;
                 continue;
             } else {
+                rowOccurances = 1;
                 break;
             }
         }
