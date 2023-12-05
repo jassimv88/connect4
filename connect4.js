@@ -1,5 +1,6 @@
 
 let COLOR = true;
+let WINNER = false;
 
 // function that checks if there is a win
 function win (turn) {
@@ -513,19 +514,34 @@ document.querySelectorAll(".column").forEach((e) => {
                 currentItem.classList.add('redturn')
                 document.getElementById("whosturn").innerText = "Yellow's Turn"
                 if (win("redturn")) {
+                    WINNER = true;
                     alert("Red wins!");
                 }
+                console.log("redturn");
             }
             else {
                 currentItem.classList.remove('redturn')
                 currentItem.classList.add('yellowturn')
                 document.getElementById("whosturn").innerText = "Red's Turn"
                 if (win("yellowturn")) {
+                    WINNER = true;
                     alert("Yellow wins!");
                 }
+                console.log("yellowturn");
             }
             
             COLOR = !COLOR
+            if(WINNER) {
+                let items = document.querySelectorAll(".redturn")
+                let yellowitems = document.querySelectorAll(".yellowturn")
+                for (let i = items.length -1; i >= 0; i--) {
+                    items[i].classList.remove("redturn");           
+                }
+                for (let i = yellowitems.length -1; i >= 0; i--) {
+                    yellowitems[i].classList.remove("yellowturn");
+                }
+                WINNER = false;
+            }
     })
 })
 
